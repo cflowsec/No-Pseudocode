@@ -437,6 +437,20 @@ semantics around the store.
 | `thunk_refuses_ida()` (Method 2) | hollow `__asm { retn }` stub + "unbalanced stack" warning; no body |
 | `guarded_selfmod()` (Method 3) | decompiles with the const-memory banner; store mis-modeled |
 
+In practice:
+
+![Method 1 refusal](Screenshots/method1-refusal.png)
+
+That dialog is Method 1. The function sits in the listing, all 6.4 MB of it, but F5 won't touch it.
+
+![Method 2 stub](Screenshots/method2-stub.png)
+
+Method 2 "succeeds": the decompiler prints the thunk as an empty stub. The unbalanced-stack warning is the only sign anything happened.
+
+![Method 3 banner](Screenshots/method3-const-banner.png)
+
+Method 3 hands you pseudocode, but the banner at the top disowns it, and the store into the canary sits right in the output.
+
 For context, decompiling junk *below* the Method 1 wall is legal but
 unpleasant: 5,001 junk instructions took 2.1 s, 10,001 took 7.1 s. Cost
 grows super-linearly until the wall makes it moot.
